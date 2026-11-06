@@ -1,0 +1,78 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>科目三 重複錯口訣卡</title>
+<style>
+:root{--bg:#0f1420;--card:#1a2233;--fg:#f2f4f8;--mute:#aab3c5;--acc:#ffb74d;--red:#ef5350;--yel:#ffd54f;--grn:#66bb6a;--blu:#4fc3f7}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 -apple-system,"PingFang TC","Noto Sans TC",sans-serif;padding:14px}
+main{max-width:720px;margin:auto} h1{font-size:24px;margin:6px 0} .sub{color:var(--mute);font-size:14px;margin-bottom:12px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px} .bar button,.card button{border:0;border-radius:10px;padding:10px 14px;font-size:15px;cursor:pointer;font-weight:600}
+.bar button{background:#2a3449;color:var(--fg)} .bar .stat{margin-left:auto;color:var(--yel);align-self:center;font-size:15px}
+.card{background:var(--card);border-radius:16px;padding:18px;margin:14px 0;border-left:6px solid var(--acc)}
+.card.ok{border-left-color:var(--grn)} .card.ng{border-left-color:var(--red)}
+.head{display:flex;justify-content:space-between;align-items:center;gap:8px} .head h2{font-size:20px;margin:0} .chip{background:#2a3449;color:var(--blu);border-radius:8px;padding:2px 8px;font-size:12px;white-space:nowrap}
+.times{color:var(--red);font-size:13px;margin:4px 0 8px}
+.q{background:#232d42;border-radius:10px;padding:10px 12px;margin:8px 0;font-size:15px} .q b{color:var(--yel)}
+.back{display:none;margin-top:10px} .card.open .back{display:block}
+.koujue{font-size:21px;font-weight:800;color:var(--acc);line-height:1.5;margin:8px 0}
+.why{color:var(--mute);font-size:15px} .check{background:#1e2a3a;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:15px}
+.check .ans{display:none;color:var(--grn);margin-top:6px} .check.show .ans{display:block} .check small{color:var(--blu);cursor:pointer}
+.btns{display:flex;gap:8px;margin-top:12px} .btns .flip{background:#2a3449;color:var(--fg)} .btns .y{background:var(--grn);color:#0f1420} .btns .n{background:var(--red);color:#fff}
+.summary{background:#1e3324;border-radius:12px;padding:12px 14px;margin-top:18px;font-size:15px}
+</style></head><body><main>
+<h1>科目三 重複錯口訣卡（8 題）</h1><div class="sub"><a href="index.html" style="color:#4fc3f7">← 回弱點複習頁</a></div>
+<div class="sub">2026-11-06｜來源：錯題檢討表裡錯 2 次以上的觀念｜用法：先看情境想答案 → 翻面對口訣 → 按「記得／不記得」。今天、明天、後天各跑一輪，「不記得」會留紅邊。</div>
+<div class="bar"><button onclick="openAll(true)">全部翻開</button><button onclick="openAll(false)">全部蓋上</button><button onclick="reset()">重新開始</button><span class="stat" id="stat"></span></div>
+<div id="deck"></div>
+<div class="summary" id="sum"></div>
+</main>
+<script>
+const CARDS=[
+{id:'resid',t:'殘差圖三種形狀',ch:'5.3 評估驗證',times:'錯 3 次：考前14回 Q41（波浪選異質）、第5回 Q31（喇叭選自相關）、11/6 Q6（喇叭選共線性）',
+ q:'殘差圖：預測值越大，殘差散布越寬，整體像<b>喇叭</b>。這是什麼問題？怎麼處理？',
+ k:'喇叭 → 異質變異 → 對 y 取 Log<br>U 形 → 漏了非線性 → 加二次項<br>隨時間規律起伏 → 常為自相關 → 時序模型<br>共線性看 VIF，殘差圖看不出來',
+ why:'三個形狀各對一種病、一種藥。喇叭是「寬度變」，U 形是「彎」，自相關是「順序有規律」。共線性是特徵之間的事，跟殘差圖無關。',
+ cq:'殘差對預測值呈 U 形（兩端為正、中間為負），寬度一致。最可能是？',ca:'漏掉非線性關係 → 加入二次項或交互作用項。寬度一致代表不是異質變異。'},
+{id:'r2',t:'R² 怎麼讀',ch:'5.3 評估驗證',times:'錯 2 次：第5回 Q42（R²＝−0.35）、11/6 Q9（R²＝0.72）',
+ q:'測試集 R²＝0.72 代表什麼？R²＝−0.35 又代表什麼？',
+ k:'R²＝1 − RSS÷TSS ＝「被解釋的變異比例」<br>R²＜0 ＝ 輸給直接猜平均<br>不是準確率、不是誤差 %、不是信心水準',
+ why:'0.72 ＝ 目標變異有 72% 被模型解釋。負數只代表模型的誤差比「全部猜平均值」還大，負號不是方向。',
+ cq:'測試集 R²＝0 代表？',ca:'預測效果跟直接猜測試集平均值一樣（RSS＝TSS）。'},
+{id:'dp',t:'差分隱私 ε 方向',ch:'6.1 隱私合規',times:'錯 3 次：Ken U4-03、第5回 Q19、11/6 治理 Q4',
+ q:'隱私預算 ε 從 1.0 調成 0.1，雜訊、隱私、準確度各怎麼變？',
+ k:'ε ＝「允許洩漏的額度」<br>額度小 ＝ 管得嚴 ＝ 雜訊多 ＝ 隱私強 ＝ 不準<br>ε 大：雜訊少、資料準、隱私弱',
+ why:'把 ε 想成「可以漏多少」。題目說「為了加強保護」就是把額度調小，代價是雜訊變多、結果變糊。隱私和準確度永遠是取捨，沒有同時提高這回事。',
+ cq:'另一平台把 ε 從 0.1 調高到 10，結果？',ca:'雜訊變小、隱私變弱、準確度提升。'},
+{id:'fair',t:'公平性指標對欄位',ch:'6.2 偏見公平',times:'錯 2 次：第4回 Q3、11/6 治理 Q6',
+ q:'群組 1：判定率 32%、TPR 0.70、FPR 0.24；群組 2：判定率 31%、TPR 0.52、FPR 0.45。哪些公平性指標成立？',
+ k:'各指標看固定欄位：<br>統計均等（群體平等）→ 看判定率<br>機會平等 → 看 TPR<br>均等勝算（均衡機率）→ 同時看 TPR ＋ FPR 兩欄',
+ why:'判定率 32 vs 31 很接近 → 統計均等成立；TPR 0.70 vs 0.52 差很多 → 機會平等不成立；TPR、FPR 都不同 → 均等勝算不成立。題幹寫「實際會／實際不會」兩個條件，就是 TPR＋FPR。',
+ cq:'委員會只要求「實際會再犯的人當中，各族群被抓到的比例相同」，是哪個指標？',ca:'機會平等（只約束 TPR）。'},
+{id:'debias',t:'去偏三階段：用限制刪選項',ch:'6.2 偏見公平',times:'錯 2 次：第5回 Q14、11/6 治理 Q5',
+ q:'規定：訓練資料不得變動、推論時不得用年齡。該用哪一階段的去偏？',
+ k:'先拿題幹限制刪選項：<br>資料不能動 → 刪前處理<br>推論不能用敏感欄 → 刪門檻調整<br>剩下 → 模型內處理（損失函數加公平性約束）<br>另外：門檻動＝門檻調整；分數動＝結果校準',
+ why:'去偏題幾乎都在考「看懂限制」。先刪再選，不要直接找看起來最合理的。後處理分兩種：改門檻叫門檻調整，改分數叫結果校準。',
+ cq:'分數都不動，但 B 群體 55 分就通過、A 群體仍要 60 分。屬於？',ca:'後處理｜門檻調整（分數沒動、各群門檻不同）。'},
+{id:'cm',t:'混淆矩陣：FP 與 FN 別對調',ch:'5.3 評估驗證',times:'錯 3 次：10/3、同學出的卷 Q4、11/2 檢核題初答',
+ q:'TP＝2、FP＝1、FN＝2，Precision 和 Recall 各是多少？',
+ k:'先看「預測」，再看「對不對」：<br>預測正卻錯 ＝ FP；預測負卻錯 ＝ FN<br>Precision ＝ TP ÷ (TP＋FP) → 看「預測為正」那一排<br>Recall ＝ TP ÷ (TP＋FN) → 看「實際為正」那一排',
+ why:'Precision＝2÷3＝0.67，Recall＝2÷4＝0.5。每次錯都是把 FP、FN 算反，先問「模型說它是什麼」就不會反。',
+ cq:'門檻從 0.5 降到 0.3，Precision、Recall 怎麼變？',ca:'Recall 上升、Precision 通常下降（網子放寬：抓得多也抓錯多）。'},
+{id:'scale',t:'÷255 是 Min-Max 不是 Z-score',ch:'5.1 特徵工程',times:'錯 2 次：考前14回 Q21、11/6 Q8',
+ q:'X_train / 255.0、X_test / 255.0 是哪種縮放？測試集該用誰的參數？',
+ k:'有「減平均、除標準差」才是 Z-score（StandardScaler）<br>(x − min) ÷ (max − min) 壓到 0～1 是 Min-Max<br>÷255 ＝ (x − 0) ÷ (255 − 0) → Min-Max<br>測試集一律用訓練集的參數',
+ why:'÷255 沒有減平均，所以不可能是 Z-score；像素的 min 是 0、max 是 255，÷255 剛好就是 Min-Max 公式。縮放器只 fit 訓練集，再 transform 兩邊。',
+ cq:'StandardScaler 應該 fit 在哪裡？',ca:'只 fit 訓練集，然後 transform 訓練集與測試集；用測試集自己的統計量就是資料洩漏。'},
+{id:'lag',t:'拉格朗日對偶（指引外，背口訣）',ch:'3.3 數值優化',times:'錯 2 次：Ken U1-09 第一刷（乘數正負）、二刷（弱對偶方向）',
+ q:'SVM 對偶問題：乘數可以是負的嗎？弱對偶是 d* 大於還是小於 p*？什麼時候間隙為 0？',
+ k:'不等式乘數不能負，等式乘數隨便你<br>對偶在下面撐著：d* ≤ p*（弱對偶）<br>凸 ＋ Slater 即可保證貼齊：間隙＝0（強對偶）<br>對偶函數恆為凹，不是凸',
+ why:'學習指引沒有這題，考到就是送分或送命，背四句即可。兩次錯分別踩在前兩句。',
+ cq:'「對偶最佳值恆大於原始極小值，稱為弱對偶」這句對嗎？',ca:'錯。弱對偶是 d* ≤ p*，對偶值在下面。'}
+];
+const KEY='s3_rep_cards_v1'; let st={}; try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function render(){const d=document.getElementById('deck'); d.innerHTML=CARDS.map((c,i)=>`<div class="card ${st[c.id]||''}" id="c_${c.id}"><div class="head"><h2>${i+1}. ${c.t}</h2><span class="chip">${c.ch}</span></div><div class="times">${c.times}</div><div class="q">${c.q}</div><div class="back"><div class="koujue">${c.k}</div><div class="why">${c.why}</div><div class="check" id="k_${c.id}"><b>檢核：</b>${c.cq} <small onclick="document.getElementById('k_${c.id}').classList.toggle('show')">（點我看答案）</small><div class="ans">${c.ca}</div></div></div><div class="btns"><button class="flip" onclick="document.getElementById('c_${c.id}').classList.toggle('open')">翻面</button><button class="y" onclick="mark('${c.id}','ok')">記得</button><button class="n" onclick="mark('${c.id}','ng')">不記得</button></div></div>`).join(''); stat();}
+function mark(id,v){st[id]=v;save();const el=document.getElementById('c_'+id);el.classList.remove('ok','ng');el.classList.add(v);stat();}
+function openAll(o){document.querySelectorAll('.card').forEach(e=>e.classList.toggle('open',o))}
+function reset(){st={};save();render();}
+function stat(){const ok=Object.values(st).filter(v=>v==='ok').length,ng=Object.values(st).filter(v=>v==='ng').length;document.getElementById('stat').textContent=`記得 ${ok}／不記得 ${ng}／未答 ${CARDS.length-ok-ng}`;const s=document.getElementById('sum');s.textContent=ng?`還有 ${ng} 張不記得：${CARDS.filter(c=>st[c.id]==='ng').map(c=>c.t).join('、')}。明天先從這幾張開始。`:(ok===CARDS.length?'8 張全部記得。明天再跑一輪，連續三天全對才算關掉。':'做完一輪後這裡會列出「不記得」的卡。');}
+render();
+</script></body></html>
