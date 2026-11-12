@@ -19,8 +19,8 @@ main{max-width:720px;margin:auto} h1{font-size:24px;margin:6px 0} .sub{color:var
 .fig{margin:6px 0 10px;background:#141b2a;border-radius:10px;padding:6px} .fig svg{width:100%;height:auto;display:block}
 .summary{background:#1e3324;border-radius:12px;padding:12px 14px;margin-top:18px;font-size:15px}
 </style></head><body><main>
-<h1>科目三 重複錯口訣卡（15 題）</h1><div class="sub"><a href="index.html" style="color:#4fc3f7">← 回弱點複習頁</a></div>
-<div class="sub">2026-11-10 更新｜來源：錯題檢討表裡錯 2 次以上的觀念（11/8 加入 L232 第二卷：L1/L2 選型、激活函數第 3 次；晚上預測卷後 L1/L2 升為第 3 次）（11/10 加入 oscar 模擬：特異度、MAE vs RMSE、梯度裁剪、L1/L2 範數，皆第 2 次）｜用法：先看情境想答案 → 翻面對圖形與口訣 → 按「記得／不記得」。今天、明天、後天各跑一輪，「不記得」會留紅邊。</div>
+<h1>科目三 重複錯口訣卡（22 題）</h1><div class="sub"><a href="index.html" style="color:#4fc3f7">← 回弱點複習頁</a></div>
+<div class="sub">2026-11-12 更新｜新增 7 張重複弱點自測卡（3 題本次答錯、4 題本次猜對）；猜對仍列不確定、不扣分。｜來源：錯題檢討表裡錯 2 次以上的觀念（11/8 加入 L232 第二卷：L1/L2 選型、激活函數第 3 次；晚上預測卷後 L1/L2 升為第 3 次）（11/10 加入 oscar 模擬：特異度、MAE vs RMSE、梯度裁剪、L1/L2 範數，皆第 2 次）｜用法：先看情境想答案 → 翻面對圖形與口訣 → 按「記得／不記得」。今天、明天、後天各跑一輪，「不記得」會留紅邊。</div>
 <div class="bar"><button onclick="openAll(true)">全部翻開</button><button onclick="openAll(false)">全部蓋上</button><button onclick="reset()">重新開始</button><span class="stat" id="stat"></span></div>
 <div id="deck"></div>
 <div class="summary" id="sum"></div>
@@ -42,6 +42,14 @@ spec:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 210" font-family=
 maermse:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 180" font-family="-apple-system,PingFang TC,Noto Sans TC,sans-serif" font-size="12"><text x="200" y="20" fill="#f2f4f8" text-anchor="middle">同一組誤差：9 次 1、1 次 50</text><line x1="95" y1="40" x2="95" y2="130" stroke="#aab3c5"/><line x1="95" y1="130" x2="365" y2="130" stroke="#aab3c5"/><text x="80" y="66" fill="#4fc3f7" text-anchor="end">MAE</text><rect x="95" y="46" width="88.5" height="30" rx="4" fill="#4fc3f7"/><text x="192" y="66" fill="#4fc3f7">5.9</text><text x="80" y="111" fill="#ffb74d" text-anchor="end">RMSE</text><rect x="95" y="91" width="237.6" height="30" rx="4" fill="#ffb74d"/><text x="341" y="111" fill="#ffb74d">15.8</text><text x="95" y="145" fill="#aab3c5" text-anchor="middle">0</text><text x="200" y="168" fill="#ffd54f" text-anchor="middle">絕對值只去符號，平方才放大：50²＝2,500</text></svg>',
 clipnorm:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 230" font-family="-apple-system,PingFang TC,Noto Sans TC,sans-serif" font-size="12"><text x="200" y="20" fill="#ffd54f" text-anchor="middle">50 ＞ max_norm 5 → 乘 5÷50＝0.1</text><line x1="40" y1="195" x2="190" y2="195" stroke="#aab3c5"/><line x1="40" y1="195" x2="40" y2="30" stroke="#aab3c5"/><line x1="40" y1="195" x2="160" y2="35" stroke="#4fc3f7" stroke-width="3"/><polygon points="160,35 149,41 159,48" fill="#4fc3f7"/><line x1="40" y1="195" x2="52" y2="179" stroke="#66bb6a" stroke-width="4"/><polygon points="52,179 45,182 51,187" fill="#66bb6a"/><text x="179" y="49" fill="#4fc3f7">[30,40]，長度 50</text><line x1="55" y1="180" x2="191" y2="150" stroke="#66bb6a" stroke-dasharray="3 3"/><text x="198" y="151" fill="#66bb6a">[3,4]，長度 5</text><text x="198" y="175" fill="#66bb6a">等比例縮短，方向不變</text><text x="200" y="219" fill="#aab3c5" text-anchor="middle">縮到 max_norm，不是縮到 1；value 每格各自砍</text></svg>',
 l1l2norm:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 195" font-family="-apple-system,PingFang TC,Noto Sans TC,sans-serif" font-size="12"><path d="M45 155 L165 155 L165 65 Z" fill="#232d42" stroke="#4fc3f7" stroke-width="3"/><path d="M153 155 L153 143 L165 143" fill="none" stroke="#aab3c5"/><text x="105" y="176" fill="#4fc3f7" text-anchor="middle" font-size="15">4</text><text x="179" y="114" fill="#4fc3f7" font-size="15">3</text><text x="94" y="103" fill="#ffd54f" font-size="15">5</text><text x="220" y="58" fill="#f2f4f8">L1＝|3|＋|4|＝7</text><text x="220" y="89" fill="#ffd54f">L2＝√(3²＋4²)</text><text x="244" y="112" fill="#ffd54f">＝√25＝5</text><text x="220" y="145" fill="#ef5350">25 是平方和</text><text x="220" y="168" fill="#ef5350">還要開根號！</text><text x="105" y="32" fill="#ffd54f" text-anchor="middle">L2 範數＝直角三角形斜邊</text></svg>',
+"normdefault":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 400 180\" font-family=\"-apple-system,PingFang TC,Noto Sans TC,sans-serif\"><path d=\"M50 135 L210 135 L210 35 Z\" fill=\"none\" stroke=\"#4fc3f7\" stroke-width=\"3\"/><text x=\"130\" y=\"158\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">4</text><text x=\"229\" y=\"90\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">3</text><text x=\"120\" y=\"72\" text-anchor=\"middle\" fill=\"#ffd54f\" font-size=\"22\">5</text><text x=\"315\" y=\"65\" text-anchor=\"middle\" fill=\"#ffd54f\" font-size=\"14\">預設 L2</text><text x=\"310\" y=\"100\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">√(9＋16)＝5</text><text x=\"310\" y=\"135\" text-anchor=\"middle\" fill=\"#aab3c5\" font-size=\"14\">ord=1 → 7</text></svg>",
+"zscoreout":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 400 180\" font-family=\"-apple-system,PingFang TC,Noto Sans TC,sans-serif\"><text x=\"95\" y=\"30\" text-anchor=\"middle\" fill=\"#4fc3f7\" font-size=\"18\">原始 x</text><text x=\"300\" y=\"30\" text-anchor=\"middle\" fill=\"#ffd54f\" font-size=\"18\">標準化 z</text><path d=\"M175 85 H225 l-9 -7 M225 85 l-9 7\" fill=\"none\" stroke=\"#66bb6a\" stroke-width=\"3\"/><text x=\"95\" y=\"72\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">10、20、30</text><text x=\"95\" y=\"110\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">平均 20</text><text x=\"95\" y=\"140\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">標準差 ≈ 8.16</text><text x=\"300\" y=\"72\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"12\">−1.225、0、1.225</text><text x=\"300\" y=\"110\" text-anchor=\"middle\" fill=\"#ffd54f\" font-size=\"14\">平均 0</text><text x=\"300\" y=\"140\" text-anchor=\"middle\" fill=\"#ffd54f\" font-size=\"14\">標準差 1</text><text x=\"200\" y=\"170\" text-anchor=\"middle\" fill=\"#aab3c5\" font-size=\"12\">同一組非定值資料的 Z-score</text></svg>",
+"confdenom":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 400 180\" font-family=\"-apple-system,PingFang TC,Noto Sans TC,sans-serif\"><rect x=\"28\" y=\"30\" width=\"344\" height=\"110\" rx=\"12\" fill=\"#232d42\"/><rect x=\"38\" y=\"40\" width=\"301\" height=\"70\" rx=\"8\" fill=\"#4e6b45\"/><text x=\"200\" y=\"22\" text-anchor=\"middle\" fill=\"#ffd54f\" font-size=\"18\">牛奶 → 麵包</text><text x=\"190\" y=\"68\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">牛奶 400 筆中，同買 360 筆</text><text x=\"190\" y=\"96\" text-anchor=\"middle\" fill=\"#ffd54f\" font-size=\"18\">360 ÷ 400 ＝ 90%</text><text x=\"200\" y=\"132\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"12\">全部交易 1,000：只用來算 Support</text><text x=\"200\" y=\"168\" text-anchor=\"middle\" fill=\"#66bb6a\" font-size=\"16\">箭頭左邊 = 已知條件 = 分母</text></svg>",
+"sigmoidsum":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 400 180\" font-family=\"-apple-system,PingFang TC,Noto Sans TC,sans-serif\"><text x=\"200\" y=\"25\" text-anchor=\"middle\" fill=\"#ffd54f\" font-size=\"18\">Sigmoid 各自判斷</text><rect x=\"55\" y=\"42\" width=\"65\" height=\"88\" rx=\"5\" fill=\"#4fc3f7\"/><text x=\"87\" y=\"151\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">0.88</text><rect x=\"167\" y=\"103\" width=\"65\" height=\"27\" rx=\"5\" fill=\"#66bb6a\"/><text x=\"199\" y=\"151\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">0.27</text><rect x=\"279\" y=\"68\" width=\"65\" height=\"62\" rx=\"5\" fill=\"#ffb74d\"/><text x=\"311\" y=\"151\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">0.62</text><text x=\"200\" y=\"175\" text-anchor=\"middle\" fill=\"#aab3c5\" font-size=\"13\">加總約 1.77；不保證 = 1</text></svg>",
+"axismean":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 400 180\" font-family=\"-apple-system,PingFang TC,Noto Sans TC,sans-serif\"><text x=\"200\" y=\"22\" text-anchor=\"middle\" fill=\"#ffd54f\" font-size=\"18\">mean(axis=0)：往下合併</text><text x=\"140\" y=\"57\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">1</text><text x=\"255\" y=\"57\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">2</text><text x=\"140\" y=\"87\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">3</text><text x=\"255\" y=\"87\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">4</text><path d=\"M140 97 V123 l-6 -7 M140 123 l6 -7 M255 97 V123 l-6 -7 M255 123 l6 -7\" fill=\"none\" stroke=\"#4fc3f7\" stroke-width=\"3\"/><text x=\"140\" y=\"149\" text-anchor=\"middle\" fill=\"#ffd54f\" font-size=\"22\">2</text><text x=\"255\" y=\"149\" text-anchor=\"middle\" fill=\"#ffd54f\" font-size=\"22\">3</text><text x=\"200\" y=\"175\" text-anchor=\"middle\" fill=\"#aab3c5\" font-size=\"13\">一欄一個平均值 → [2,3]</text></svg>",
+"minibatch":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 400 180\" font-family=\"-apple-system,PingFang TC,Noto Sans TC,sans-serif\"><rect x=\"14\" y=\"38\" width=\"114\" height=\"105\" rx=\"8\" fill=\"#232d42\"/><text x=\"71\" y=\"63\" text-anchor=\"middle\" fill=\"#4fc3f7\" font-size=\"15\">BGD</text><text x=\"71\" y=\"96\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">全部樣本</text><text x=\"71\" y=\"124\" text-anchor=\"middle\" fill=\"#4fc3f7\" font-size=\"12\">每步成本高</text><rect x=\"143\" y=\"38\" width=\"114\" height=\"105\" rx=\"8\" fill=\"#232d42\"/><text x=\"200\" y=\"63\" text-anchor=\"middle\" fill=\"#ef5350\" font-size=\"15\">SGD</text><text x=\"200\" y=\"96\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">1 筆</text><text x=\"200\" y=\"124\" text-anchor=\"middle\" fill=\"#ef5350\" font-size=\"12\">採樣雜訊大</text><rect x=\"272\" y=\"38\" width=\"114\" height=\"105\" rx=\"8\" fill=\"#232d42\"/><text x=\"329\" y=\"63\" text-anchor=\"middle\" fill=\"#66bb6a\" font-size=\"15\">Mini-batch</text><text x=\"329\" y=\"96\" text-anchor=\"middle\" fill=\"#f2f4f8\" font-size=\"14\">一小批</text><text x=\"329\" y=\"124\" text-anchor=\"middle\" fill=\"#66bb6a\" font-size=\"12\">效率與穩定折衷</text><text x=\"200\" y=\"173\" text-anchor=\"middle\" fill=\"#aab3c5\" font-size=\"13\">每步較輕 ≠ 總訓練時間一定較短</text></svg>",
+"attentionquad":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 400 180\" font-family=\"-apple-system,PingFang TC,Noto Sans TC,sans-serif\"><rect x=\"35\" y=\"60\" width=\"65\" height=\"65\" fill=\"#4fc3f7\"/><rect x=\"218\" y=\"30\" width=\"130\" height=\"130\" fill=\"#ffb74d\"/><path d=\"M283 30 V160 M218 95 H348\" stroke=\"#1a2233\" stroke-width=\"2\"/><text x=\"67\" y=\"48\" text-anchor=\"middle\" fill=\"#4fc3f7\" font-size=\"14\">n×n</text><text x=\"157\" y=\"94\" text-anchor=\"middle\" fill=\"#ffd54f\" font-size=\"18\">→ 4 倍</text><text x=\"283\" y=\"22\" text-anchor=\"middle\" fill=\"#ffd54f\" font-size=\"14\">2n×2n</text><text x=\"200\" y=\"178\" text-anchor=\"middle\" fill=\"#aab3c5\" font-size=\"13\">兩個方向都翻倍 → 配對數 ×4</text></svg>",
+
 };
 const CARDS=[
 {id:'resid',t:'殘差圖四種形狀',ch:'5.3 評估驗證',times:'錯 4 次：考前14回 Q41（波浪選異質）、第5回 Q31（喇叭選自相關）、11/6 Q6（喇叭選共線性）、第7回 Q7（隨機散布選自相關）',
@@ -119,6 +127,84 @@ const CARDS=[
  k:'L1＝絕對值加總＝|3|＋|4|＝7<br>L2＝平方和開根號＝√(9＋16)＝√25＝5<br>25 是平方和，還要開根號<br>口訣：L2 範數＝直角三角形斜邊：3、4、5',
  why:'第5回 Q39 的原始紀錄是「答對但不確定」，oscar Q49 註記為同觀念重複錯。這次選 25，少了開根號；L1 是絕對值加總，L2 是平方和再開根號。',
  cq:'權重向量 [3,−4,12] 的 L1 與 L2 範數各是多少？',ca:'L1＝3＋4＋12＝19；L2＝√(9＋16＋144)＝√169＝13。169 是平方和，不是 L2 範數。'},
+{
+  "id": "normdefault",
+  "t": "np.linalg.norm 預設就是 L2",
+  "ch": "3.2 線性代數",
+  "times": "第 3 次列管：第5回 Q39（答對不確定）→ 11/10 Q49（答錯）→ 11/12 Q7（答錯）",
+  "q": "np.linalg.norm([3, 4]) 沒有寫 ord，輸出 7、5、25，還是 12？",
+  "k": "一維向量 norm 預設 L2：平方和，再開根號<br>√(3²＋4²)＝5；不是 3×4＝12<br>ord=1 才是 L1：絕對值相加 3＋4＝7",
+  "why": "本次把 norm 當相乘；11/10 曾少開根號。第5回原紀錄是答對不確定，這裡沿用歷次列管次數，不把它改成真錯。",
+  "cq": "np.linalg.norm([6,8]) 與 np.linalg.norm([6,8], ord=1) 各是多少？",
+  "ca": "預設 L2＝√(36＋64)＝10；ord=1 是 L1＝6＋8＝14。"
+},
+{
+  "id": "zscoreout",
+  "t": "印的是 z：平均 0，標準差 1",
+  "ch": "5.1 特徵工程",
+  "times": "第 3 次：第1回 Q21、11/6 小測 Q8 → 11/12 Q10（本次答錯）",
+  "q": "x=np.array([10,20,30])，z=(x−x.mean())/x.std()。印 z 的平均和標準差，會是 20、10 嗎？",
+  "k": "先看印誰：z 已經標準化<br>同一組非定值資料：平均 0、標準差 1<br>0～1 是 Min-Max，別與 Z-score 混用",
+  "why": "兩筆舊題混淆 Z-score 與 Min-Max；這次又把 z 當成原始 x。此題 NumPy 預設母體標準差，x 的標準差約 8.16；z 約為 [−1.225,0,1.225]。",
+  "cq": "z 的最小值可以是負數嗎？若用訓練集的平均與標準差轉換新資料，新資料也一定平均 0 嗎？",
+  "ca": "可以為負；新資料不保證平均 0。平均 0、標準差 1 指用同一組非定值資料的統計量做 Z-score。"
+},
+{
+  "id": "confdenom",
+  "t": "Confidence 分母看箭頭左邊",
+  "ch": "4.2 常見演算法",
+  "times": "第 2 次：同學卷 Q14（分母錯放 B）→ 11/12 Q19（錯放全部交易）",
+  "q": "1,000 筆交易：牛奶 400、麵包 800、同買 360。「牛奶→麵包」的 Confidence 是多少？",
+  "k": "信賴度：同買 ÷ 箭頭左邊<br>360÷400＝0.9＝90%<br>支持度才除全部：360÷1000＝36%",
+  "why": "這次把 Support 當 Confidence。舊同學卷 Q14 除以麵包 800；方向改變，條件分母就不同。Q36 的 Support 分母錯誤列為旁證，不增加本卡次數。",
+  "cq": "改問「麵包→牛奶」的信賴度是多少？Support 會跟著改嗎？",
+  "ca": "Confidence＝360÷800＝45%；Support 仍為 360÷1000＝36%，同買事件沒有變。"
+},
+{
+  "id": "sigmoidsum",
+  "t": "Sigmoid 各算各的，Softmax 分同一個餅",
+  "ch": "4.3 深度學習",
+  "times": "重複弱點第 2 次：L232 第二卷 Q10 曾答錯；11/12 Q27 猜對、仍待複習",
+  "q": "對 [2,−1,0.5] 分別做 Sigmoid，得到 [0.88,0.27,0.62]。總和一定是 1 嗎？",
+  "k": "Sigmoid 各自判斷，可同時成立<br>0.88＋0.27＋0.62≈1.77，不是 1<br>Softmax 才讓各類機率合計 1",
+  "why": "本次猜對；舊題曾把 Softmax 用在多標籤。Sigmoid 輸出各自介於 0 與 1，不保證加總為 1；Softmax 適合互斥類別的單標籤分類。",
+  "cq": "一張圖可同時有貓、狗、車，三個標籤用 Sigmoid 還是 Softmax？",
+  "ca": "三個 Sigmoid 各自判斷，通常配二元交叉熵；若是貓／狗／車三選一，才用 Softmax 配類別交叉熵。"
+},
+{
+  "id": "axismean",
+  "t": "axis=0 往下壓，一欄一答案",
+  "ch": "3.2 線性代數",
+  "times": "重複弱點第 2 次：同學卷 Q3 曾答錯；11/12 Q31 猜對、仍待複習",
+  "q": "x=np.array([[1,2],[3,4]])，x.mean(axis=0) 是 [2,3]、[1.5,3.5]，還是 2.5？",
+  "k": "axis=0 往下合併：一欄一答案<br>[(1＋3)÷2, (2＋4)÷2]＝[2,3]<br>axis=1 一列一答案；沒寫 axis 才全體平均",
+  "why": "舊題把 sum(axis=0) 當全部加總。本次 mean 換了聚合方式，方向規則相同；先看 axis，再看是 sum 還是 mean。",
+  "cq": "同一矩陣，sum(axis=0)、mean(axis=1)、mean() 各是多少？",
+  "ca": "sum(axis=0)＝[4,6]；mean(axis=1)＝[1.5,3.5]；mean()＝2.5。"
+},
+{
+  "id": "minibatch",
+  "t": "全批次穩但每步重，小批次取折衷",
+  "ch": "3.3 數值優化",
+  "times": "重複弱點第 2 次：Ken U1-07 曾答錯；11/12 Q33 猜對、仍待複習",
+  "q": "全批次每步成本高，純 SGD 一次一筆、梯度較吵；要兼顧效率與穩定，改用什麼？",
+  "k": "BGD：一次全部，每步成本高<br>SGD：一次一筆，每步輕、採樣雜訊大<br>Mini-batch：一次一小批，取兩者折衷",
+  "why": "Ken 題曾把 SGD 的採樣雜訊安到 BGD。本次猜對 Mini-batch；「快」指每步資料量少，不代表總訓練時間必然更短，還受硬體、批次大小與收斂影響。",
+  "cq": "把 batch size 固定為 1，能否用「增加 epoch」把每步變成 Mini-batch？",
+  "ca": "不能。每步仍只看一筆；增加 epoch 是多跑幾輪資料，不是增加每次更新使用的樣本數。"
+},
+{
+  "id": "attentionquad",
+  "t": "注意力 n×n：長度翻倍，配對四倍",
+  "ch": "4.3 深度學習",
+  "times": "重複弱點第 2 次：L232 第二卷 Q3 曾答錯；11/12 Q49 猜對、仍待複習",
+  "q": "標準全注意力的序列長度 512→1024，其他維度固定，注意力矩陣計算量約幾倍？",
+  "k": "每個 token 都看每個 token：n×n<br>(1024÷512)²＝2²＝4 倍<br>可平行不代表計算量變成 O(n)",
+  "why": "舊題曾把 Self-Attention 記成線性複雜度。本次猜對；固定特徵維度時，標準 dense self-attention 對序列長度是 O(n²)，這裡不是估計整個模型的實測耗時。",
+  "cq": "標準全注意力長度變 3 倍，注意力配對數約幾倍？",
+  "ca": "3²＝9 倍。兩個方向都變 3 倍，所以是 3×3，不是 3 倍。"
+},
+
 ];
 const KEY='s3_rep_cards_v1'; let st={}; try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
